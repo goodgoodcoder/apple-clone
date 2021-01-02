@@ -9,6 +9,7 @@ body {
   overflow-x: hidden;
   color: rgb(30, 30, 32);
   letter-spacing: -0.05em;
+  background: white;
 }
 
 p {
@@ -18,6 +19,10 @@ p {
 a {
   color: rgb(30, 30, 32);
   text-decoration: none;
+}
+
+.container {
+  overflow-x: hidden;
 }
 
 .global-nav {
@@ -40,6 +45,16 @@ a {
   height: 52px;
   padding: 0 1rem;
   border-bottom: 1px solid #ddd;
+}
+
+.local-nav-sticky .local-nav {
+  position: fixed;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: saturate(180%) blur(15px);
+  -moz-backdrop-filter: saturate(180%) blur(15px);
+  -o-backdrop-filter: saturate(180%) blur(15px);
+  backdrop-filter: saturate(180%) blur(15px);
 }
 
 .global-nav-links,
@@ -68,11 +83,13 @@ a {
 }
 
 .scroll-section {
+  position: relative;
   padding-top: 50vh;
 }
 
 #scroll-section-0 h1 {
   position: relative;
+  top: -10vh;
   z-index: 5;
   font-size: 4rem;
   text-align: center;
@@ -125,6 +142,11 @@ a {
 #show-scene-2 #scroll-section-2 .sticky-element,
 #show-scene-3 #scroll-section-3 .sticky-element {
   display: block;
+  will-change: transform, opacity;
+}
+
+.scroll-effect-end .sticky-element {
+  display: none !important;
 }
 
 #scroll-section-2 .main-message {
@@ -157,7 +179,7 @@ a {
 }
 
 .description-message {
-  width: 50%;
+  width: 45%;
   font-weight: bold;
   opacity: 0;
 }
@@ -168,24 +190,44 @@ a {
   background-color: rgb(30, 30, 32);
 }
 
-.mid-message {
-  font-size: 2rem;
-  color: #888;
-  padding: 0 1rem;
-  max-width: 1000px;
-  margin: 0 auto;
+#scroll-section-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mid-message strong {
+.mid-message {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 2rem;
   color: rgb(30, 30, 32);
 }
 
+.mid-message strong {
+  color: #acacac;
+}
+
+.image-blend-canvas.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
 .canvas-caption {
+  max-width: 1000px;
+  margin: -24rem auto 0;
   padding: 0 1rem;
   font-size: 1.2rem;
   color: #888;
+}
+
+.bottom-message {
   max-width: 1000px;
-  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: #888;
+  margin: 0 auto 8rem;
 }
 
 .footer {
@@ -197,6 +239,67 @@ a {
   color: rgb(30, 30, 32);
 }
 
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #ffffff;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.before-load {
+  overflow: hidden;
+}
+
+.before-load .container {
+  display: none;
+}
+
+.before-load .loading {
+  opacity: 1;
+}
+
+@keyframes loading-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading-circle-animation {
+  0% {
+    stroke-dashoffset: 157;
+  }
+  75% {
+    stroke-dashoffset: -147;
+  }
+  100% {
+    stroke-dashoffset: -157;
+  }
+}
+
+.loading-circle {
+  width: 54px;
+  height: 54px;
+  animation: loading-spin 3s infinite;
+}
+
+.loading-circle circle {
+  stroke: black;
+  stroke-width: 4;
+  /* getTotalLength()로 stroke 길이 얻어올 수 있음 */
+  stroke-dasharray: 157;
+  stroke-dashoffset: 0;
+  fill: transparent;
+  animation: loading-circle-animation 1s infinite;
+}
+
 @media (min-width: 1024px) {
   #scroll-section-0 h1 {
     font-size: 9vw;
@@ -205,6 +308,7 @@ a {
     font-size: 4vw;
   }
   .description {
+    padding: 0;
     font-size: 2rem;
   }
   .description strong {
@@ -213,8 +317,11 @@ a {
   #scroll-section-2 main-message {
     font-size: 6vw;
   }
-  #scroll-section-2 main-message small {
+  .main-message small {
     font-size: 1.5vw;
+  }
+  .sticky-element.description-message {
+    width: 20%;
   }
   #scroll-section-2 .b {
     top: 20%;
@@ -223,13 +330,14 @@ a {
   #scroll-section-2 .c {
     left: 55%;
   }
-  .description-message {
-    width: 20%;
-  }
   .mid-message {
+    width: 1000px;
+    padding: 0;
     font-size: 4vw;
   }
   .canvas-caption {
+    margin-top: -8rem;
+    padding: 0;
     font-size: 2rem;
   }
 }
